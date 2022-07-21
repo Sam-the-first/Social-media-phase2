@@ -22,16 +22,16 @@
         <CLASSES />
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$MODULE_DIR$/../../mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/build/java" />
-          <root url="jar://$MODULE_DIR$/../../mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/demo/java" />
-          <root url="jar://$MODULE_DIR$/../../mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/generated/java" />
-          <root url="jar://$MODULE_DIR$/../../mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/legacy/java" />
-          <root url="jar://$MODULE_DIR$/../../mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/core-api/java" />
-          <root url="jar://$MODULE_DIR$/../../mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/core-impl/java" />
-          <root url="jar://$MODULE_DIR$/../../mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/protocol-impl/java" />
-          <root url="jar://$MODULE_DIR$/../../mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/user-api/java" />
-          <root url="jar://$MODULE_DIR$/../../mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/user-impl/java" />
-          <root url="jar://$MODULE_DIR$/../../mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/test/java" />
+          <root url="jar://$USER_HOME$/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/build/java" />
+          <root url="jar://$USER_HOME$/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/demo/java" />
+          <root url="jar://$USER_HOME$/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/generated/java" />
+          <root url="jar://$USER_HOME$/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/legacy/java" />
+          <root url="jar://$USER_HOME$/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/core-api/java" />
+          <root url="jar://$USER_HOME$/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/core-impl/java" />
+          <root url="jar://$USER_HOME$/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/protocol-impl/java" />
+          <root url="jar://$USER_HOME$/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/user-api/java" />
+          <root url="jar://$USER_HOME$/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/main/user-impl/java" />
+          <root url="jar://$USER_HOME$/mysql-connector-java-8.0.29.zip!/mysql-connector-java-8.0.29/src/test/java" />
         </SOURCES>
       </library>
     </orderEntry>
@@ -41,7 +41,9 @@
           <root url="jar://$MODULE_DIR$/lib/mysql-connector-java-8.0.29.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.ideaLibSources/mysql-connector-java-8.0.29-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">

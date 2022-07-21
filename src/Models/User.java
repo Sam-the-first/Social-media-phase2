@@ -2,14 +2,11 @@ package Models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class User {
 
-    public final static ArrayList<User> users = new ArrayList<>();
+    private final static ArrayList<User> users = new ArrayList<>();
     public static final String SECURITY_QUESTION = "What was your best friend's name in high school?";
-    public static Comparator<? super User> searchComprator;
-
 
     private String username;
     private String password;
@@ -18,10 +15,9 @@ public class User {
     private String bio;
     private LocalDate birthDate;
     private String securityAnswer;
-    private ArrayList<User> followed=new ArrayList<>();
-    private ArrayList<User> followers=new ArrayList<>();
+    private String type;
 
-    public User(String firstname, String lastname, String username, String password,String bio, LocalDate birthDate, String securityAnswer) {
+    public User(String firstname, String lastname, String username, String password,String bio, LocalDate birthDate, String securityAnswer, String type) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.username = username;
@@ -29,6 +25,7 @@ public class User {
         this.bio = bio;
         this.birthDate = birthDate;
         this.securityAnswer = securityAnswer;
+        this.type = type;
 
         User.users.add(this);
     }
@@ -97,24 +94,4 @@ public class User {
         this.birthDate = birthDate;
     }
 
-    public ArrayList<User> getFollowed() {
-        return followed;
-    }
-
-    public ArrayList<User> getFollowers() {
-        return followers;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", bio='" + bio + '\'' +
-                ", birthDate=" + birthDate +
-                ", securityAnswer='" + securityAnswer + '\'' +
-                '}';
-    }
 }

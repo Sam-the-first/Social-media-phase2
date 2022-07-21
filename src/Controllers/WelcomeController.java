@@ -1,10 +1,14 @@
 package Controllers;
 
+import Database.Jdbc;
 import Enums.Message;
 import Models.BusinessAccount;
 import Models.User;
 import Views.Menu;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -36,21 +40,35 @@ public class WelcomeController extends Controller{
         if ((message = this.validatePassword(password, repeatedPassword)) != Message.SUCCESS) {
             return message;
         }
-        LocalDate birthDay;
+        LocalDate birthDay = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+        String accountType = null;
+        if(type == 1) {
+            accountType = "Normal";
+            new User(firstname, lastname, username, password, bio, birthDay, securityQuestionAnswer, accountType);
+        }
+        else if(type == 2) {
+            accountType = "Business";
+            new BusinessAccount(firstname, lastname, username, password, bio, birthDay, securityQuestionAnswer,accountType);
+        }
+        new User(firstname, lastname, username, password, bio, birthDay, securityQuestionAnswer, accountType);
+        String query = " insert into users (username, password, first_name, last_name," +
+                " bio, birth_date, security_answer, account_type)"
+                + " values (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
-             birthDay = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
-        }
-        catch (Exception e)
-        {
-            return Message.Invalid_BIRTH_DATE;
-        }
-        if(type==1)
-        {
-            new User(firstname, lastname, username, password, bio, birthDay, securityQuestionAnswer);
-        }
-        else if(type==2)
-        {
-            new BusinessAccount(firstname, lastname, username, password, bio, birthDay, securityQuestionAnswer);
+            Connection connection = Jdbc.getInstance().openConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            preparedStatement.setString(3, firstname);
+            preparedStatement.setString(4, lastname);
+            preparedStatement.setString(5, bio);
+            preparedStatement.setString(6, birthDate);
+            preparedStatement.setString(7, securityQuestionAnswer);
+            preparedStatement.setString(8, accountType);
+            preparedStatement.execute();
+            Jdbc.getInstance().closeConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return Message.SUCCESS;
     }
@@ -84,6 +102,7 @@ public class WelcomeController extends Controller{
         }
         return Message.INCORRECT_PASSWORD;
     }
+
     public Message handlePasswordChange(String username ,String password)
     {
         Message message;
@@ -94,7 +113,6 @@ public class WelcomeController extends Controller{
         user.setPassword(password);
         return Message.SUCCESS;
     }
-
 
     boolean doesUserExist(String username) {
         return User.getUserByUsername(username) != null;

@@ -1,6 +1,7 @@
 package Views;
 
 import Controllers.WelcomeController;
+import Database.Jdbc;
 import Enums.Message;
 import Models.User;
 
@@ -26,6 +27,7 @@ public class WelcomeMenu extends Menu{
 
     @Override
     public void run() {
+        Jdbc.getInstance().initialize();
         this.showOptions();
 
         String choice = this.getChoice();
@@ -42,7 +44,6 @@ public class WelcomeMenu extends Menu{
                 break;
             default:
                 System.out.println(Message.INVALID_CHOICE);
-                run();
         }
     }
 
@@ -79,7 +80,6 @@ public class WelcomeMenu extends Menu{
                 this.run();
             default:
                 System.out.println(Message.INVALID_CHOICE);
-                logIn();
         }
     }
 
