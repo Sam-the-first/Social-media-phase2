@@ -27,8 +27,10 @@ public class Jdbc {
     public void initialize () {
         try {
             Class.forName("com.mysql.jdbc.Driver");
+            Connection connection = openConnection();
             createTable();
             loadDataInStart();
+            closeConnection();
         } catch (ClassNotFoundException e) {
             LOGGER.severe(e.getMessage());
             throw new IllegalStateException("Load dataBase Driver", e);
@@ -37,28 +39,26 @@ public class Jdbc {
         }
     }
     private void createTable () throws SQLException {
-        String sql = "CREATE TABLE if not exists users (\n" +
-                "  id int unsigned NOT NULL AUTO_INCREMENT,\n" +
-                "  username varchar(50) COLLATE utf8_persian_ci NOT NULL,\n" +
-                "  password varchar(30) COLLATE utf8_persian_ci NOT NULL,\n" +
-                "  first_name varchar(60) COLLATE utf8_persian_ci NOT NULL,\n" +
-                "  last_name varchar(60) COLLATE utf8_persian_ci NOT NULL,\n" +
-                "  bio varchar(255) COLLATE utf8_persian_ci NOT NULL,\n" +
-                "  birth_date varchar(255) COLLATE utf8_persian_ci NOT NULL,\n" +
-                "  security_answer varchar(255) COLLATE utf8_persian_ci NOT NULL,\n" +
-                "  account_type varchar(65) COLLATE utf8_persian_ci NOT NULL,\n" +
-                "  PRIMARY KEY (id),\n" +
-                "  UNIQUE KEY id_UNIQUE (id),\n" +
-                "  KEY id (id)\n" +
+        String sql = "CREATE TABLE IF NOT EXISTS users (" +
+                "  id int unsigned NOT NULL AUTO_INCREMENT," +
+                "  username varchar(50) COLLATE utf8_persian_ci NOT NULL," +
+                "  password varchar(30) COLLATE utf8_persian_ci NOT NULL," +
+                "  first_name varchar(60) COLLATE utf8_persian_ci NOT NULL," +
+                "  last_name varchar(60) COLLATE utf8_persian_ci NOT NULL," +
+                "  bio varchar(255) COLLATE utf8_persian_ci NOT NULL," +
+                "  birth_date varchar(255) COLLATE utf8_persian_ci NOT NULL," +
+                "  security_answer varchar(255) COLLATE utf8_persian_ci NOT NULL," +
+                "  account_type varchar(65) COLLATE utf8_persian_ci NOT NULL," +
+                "  PRIMARY KEY (id)," +
+                "  UNIQUE KEY id_UNIQUE (id)," +
+                "  KEY id (id)" +
                 ")";
-        Connection connection = openConnection();
         Statement statement = connection.createStatement();
-        statement.executeQuery(sql);
+        statement.execute(sql);
     }
 
     private void loadDataInStart() throws SQLException {
         String query = "select * from users";
-        openConnection();
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery(query);
         while (resultSet.next()) {
@@ -77,7 +77,6 @@ public class Jdbc {
                 new BusinessAccount(firstName, lastName, username, password, bio, birthDay, securityAnswer,accountType);
         }
 
-        closeConnection();
     }
 
     public Connection openConnection() throws SQLException {

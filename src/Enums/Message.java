@@ -1,5 +1,7 @@
 package Enums;
 
+import Controllers.StaticData;
+
 public enum Message {
     INVALID_CHOICE("invalid choice"),
     SUCCESS("OK"),
@@ -13,10 +15,14 @@ public enum Message {
     INVALID_ROLE("invalid role"),
     USER_DOES_NOT_EXIST("user does not exist"),
     INCORRECT_PASSWORD("incorrect password"),
+    Invalid_BIRTH_DATE("invalid birth date"),
     WRONG_ANSWER("wrong answer to security question"),
     USERNAME_CHANGED_SUCCESSFULLY("username changed successfully"),
     PASSWORD_CHANGED_SUCCESSFULLY("password changed successfully"),
-    USERNAME_EXIST("username exist");
+    USERNAME_EXIST("username exist"),
+    LONG_BIO("maximum bio size is "+Integer.toString(StaticData.MaxBioLenth))
+    ;
+
 
 
     private String message;

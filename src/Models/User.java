@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class User {
 
-    private final static ArrayList<User> users = new ArrayList<>();
+    public final static ArrayList<User> users = new ArrayList<>();
     public static final String SECURITY_QUESTION = "What was your best friend's name in high school?";
 
     private String username;
@@ -16,6 +16,9 @@ public class User {
     private LocalDate birthDate;
     private String securityAnswer;
     private String type;
+
+   private ArrayList<User> followers=new ArrayList<>();
+   private ArrayList<User> followings=new ArrayList<>();
 
     public User(String firstname, String lastname, String username, String password,String bio, LocalDate birthDate, String securityAnswer, String type) {
         this.firstname = firstname;
@@ -94,4 +97,11 @@ public class User {
         this.birthDate = birthDate;
     }
 
+    public ArrayList<User> getFollowers() {
+        return followers;
+    }
+
+    public ArrayList<User> getFollowings() {
+        return followings;
+    }
 }
