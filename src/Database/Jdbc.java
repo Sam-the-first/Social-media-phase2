@@ -27,6 +27,7 @@ public class Jdbc {
     public void initialize () {
         try {
             Class.forName("com.mysql.jdbc.Driver");
+            createTable();
             loadDataInStart();
         } catch (ClassNotFoundException e) {
             LOGGER.severe(e.getMessage());
@@ -34,6 +35,25 @@ public class Jdbc {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    private void createTable () throws SQLException {
+        String sql = "CREATE TABLE if not exists users (\n" +
+                "  id int unsigned NOT NULL AUTO_INCREMENT,\n" +
+                "  username varchar(50) COLLATE utf8_persian_ci NOT NULL,\n" +
+                "  password varchar(30) COLLATE utf8_persian_ci NOT NULL,\n" +
+                "  first_name varchar(60) COLLATE utf8_persian_ci NOT NULL,\n" +
+                "  last_name varchar(60) COLLATE utf8_persian_ci NOT NULL,\n" +
+                "  bio varchar(255) COLLATE utf8_persian_ci NOT NULL,\n" +
+                "  birth_date varchar(255) COLLATE utf8_persian_ci NOT NULL,\n" +
+                "  security_answer varchar(255) COLLATE utf8_persian_ci NOT NULL,\n" +
+                "  account_type varchar(65) COLLATE utf8_persian_ci NOT NULL,\n" +
+                "  PRIMARY KEY (id),\n" +
+                "  UNIQUE KEY id_UNIQUE (id),\n" +
+                "  KEY id (id)\n" +
+                ")";
+        Connection connection = openConnection();
+        Statement statement = connection.createStatement();
+        statement.executeQuery(sql);
     }
 
     private void loadDataInStart() throws SQLException {
@@ -63,7 +83,7 @@ public class Jdbc {
     public Connection openConnection() throws SQLException {
         this.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mySocialMedia",
                 "root",
-                "------");
+                "HESAM1381");
         LOGGER.info("connection established successfully");
         return connection;
     }
