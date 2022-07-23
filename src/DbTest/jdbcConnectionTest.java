@@ -1,7 +1,5 @@
 package DbTest;
 
-import static org.junit.Assert.*;
-
 import Database.Jdbc;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

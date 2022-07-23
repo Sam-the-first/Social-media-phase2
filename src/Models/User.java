@@ -2,11 +2,14 @@ package Models;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class User {
 
     public final static ArrayList<User> users = new ArrayList<>();
     public static final String SECURITY_QUESTION = "What was your best friend's name in high school?";
+    public static Comparator<? super User> searchComprator;
+
 
     private String username;
     private String password;
@@ -17,8 +20,8 @@ public class User {
     private String securityAnswer;
     private String type;
 
-   private ArrayList<User> followers=new ArrayList<>();
-   private ArrayList<User> followings=new ArrayList<>();
+    private ArrayList<User> followings=new ArrayList<>();
+    private ArrayList<User> followers=new ArrayList<>();
 
     public User(String firstname, String lastname, String username, String password,String bio, LocalDate birthDate, String securityAnswer, String type) {
         this.firstname = firstname;
@@ -97,11 +100,48 @@ public class User {
         this.birthDate = birthDate;
     }
 
+    public ArrayList<User> getFollowings() {
+        return followings;
+    }
+
     public ArrayList<User> getFollowers() {
         return followers;
     }
+    public void removeFollowing(User user)
+    {
+        followings.remove(user);
+        user.getFollowers().remove(this);
+    }
+    public void addFollowing(User user)
+    {
+        followings.add(user);
+        user.getFollowers().add(this);
+    }
+    public void removeFollowers(User user)
+    {
 
-    public ArrayList<User> getFollowings() {
-        return followings;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", bio='" + bio + '\'' +
+                ", birthDate=" + birthDate +
+                ", securityAnswer='" + securityAnswer + '\'' +
+                '}';
+    }
+    public String toString2()
+    {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", bio='" + bio + '\'' +
+                ", birthDate=" + birthDate +
+                '}';
     }
 }

@@ -2,7 +2,7 @@ package Views;
 
 import Controllers.WelcomeController;
 import Database.Jdbc;
-import Enums.Message;
+import Enums.WarningMessage;
 import Models.User;
 
 public class WelcomeMenu extends Menu{
@@ -43,7 +43,7 @@ public class WelcomeMenu extends Menu{
                 this.exit();
                 break;
             default:
-                System.out.println(Message.INVALID_CHOICE);
+                System.out.println(WarningMessage.INVALID_CHOICE);
         }
     }
 
@@ -58,8 +58,8 @@ public class WelcomeMenu extends Menu{
         String securityQuestionAnswer = this.getInput("answer this security question: " + User.SECURITY_QUESTION);
         this.showTypesOfAccount();
         String choice=this.getChoice();
-        Message message=this.controller.handleCreateUser(username, password, repeatedPassword, firstname, lastname, bio, birthDate, securityQuestionAnswer,Integer.parseInt(choice));
-        System.out.println(message == Message.SUCCESS ? "user created successfully" : message);
+        WarningMessage message=this.controller.handleCreateUser(username, password, repeatedPassword, firstname, lastname, bio, birthDate, securityQuestionAnswer,Integer.parseInt(choice));
+        System.out.println(message == WarningMessage.SUCCESS ? "user created successfully" : message);
         this.run();
     }
 
@@ -79,41 +79,35 @@ public class WelcomeMenu extends Menu{
             case "3":
                 this.run();
             default:
-                System.out.println(Message.INVALID_CHOICE);
+                System.out.println(WarningMessage.INVALID_CHOICE);
         }
     }
 
     private void logInWithPassword(String username) {
         String password = this.getInput("enter password");
-        Message message = this.controller.handleLogin(username, password);
-        if (message == Message.SUCCESS) {
-            LogedInMenu logedInMenu =new LogedInMenu(username);
-            logedInMenu.run();
+        WarningMessage message = this.controller.handleLogin(username, password);
+        if (message == WarningMessage.SUCCESS) {
+            LoggedInMenu loggedInMenu = new LoggedInMenu(username);
+            loggedInMenu.run();
         } else {
             System.out.println(message);
             this.logIn();
         }
-
     }
 
     private void forgotPassword(String username) {
         String answer = this.getInput("answer this question to show your password: " + User.SECURITY_QUESTION);
 
-        Message message = this.controller.checkSecurityAnswer(username, answer);
-        if (message == Message.SUCCESS) {
-            String newpassword=this.getInput("enter a new password");
-            Message changeMessage=this.controller.handlePasswordChange(username,newpassword);
-            if(changeMessage==Message.SUCCESS)
-            {
+        WarningMessage message = this.controller.checkSecurityAnswer(username, answer);
+        if (message == WarningMessage.SUCCESS) {
+            String newPassword = this.getInput("enter a new password");
+            WarningMessage changeMessage = this.controller.handlePasswordChange(username,newPassword);
+            if(changeMessage == WarningMessage.SUCCESS)
                 this.logInWithPassword(username);
-            }
             else
-            {
                 this.forgotPassword(username);
-            }
-        } else {
+        } else
             this.forgotPassword(username);
-        }
     }
 
     private void exit() {
@@ -135,10 +129,9 @@ public class WelcomeMenu extends Menu{
         System.out.println("2. Forgot Password");
         System.out.println("3. Previous menu");
     }
-    private void  showTypesOfAccount()
-    {
+    private void  showTypesOfAccount() {
         System.out.println("Enter your type of account:\n" +
-                "1. Normal Acount\n" +
+                "1. Normal Account\n" +
                 "2. BusinessAccount");
     }
 }

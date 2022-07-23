@@ -1,8 +1,6 @@
 package Enums;
 
-import Controllers.StaticData;
-
-public enum Message {
+public enum WarningMessage {
     INVALID_CHOICE("invalid choice"),
     SUCCESS("OK"),
     WRONG_CREDENTIALS("Wrong credentials"),
@@ -20,14 +18,15 @@ public enum Message {
     USERNAME_CHANGED_SUCCESSFULLY("username changed successfully"),
     PASSWORD_CHANGED_SUCCESSFULLY("password changed successfully"),
     USERNAME_EXIST("username exist"),
-    LONG_BIO("maximum bio size is "+Integer.toString(StaticData.MaxBioLenth))
-    ;
+    LONG_BIO("maximum bio size is 15"),
+    LONG_TEXT("maximum texts size is 1200"),
+    POST_DOES_NOT_EXIST("post does not exist");
 
 
 
     private String message;
 
-    Message(String message) {
+    WarningMessage(String message) {
         this.message = message;
     }
 

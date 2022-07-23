@@ -1,5 +1,5 @@
 package Controllers;
 
 public class StaticData {
-    public static int MaxBioLenth=15;
+    public static int MaxBioLength=15;
 }

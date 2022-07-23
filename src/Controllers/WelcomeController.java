@@ -1,14 +1,10 @@
 package Controllers;
 
-import Database.Jdbc;
-import Enums.Message;
+import Enums.WarningMessage;
 import Models.BusinessAccount;
 import Models.User;
 import Views.Menu;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -32,12 +28,12 @@ public class WelcomeController extends Controller{
         return WelcomeController.instance;
     }
 
-    public Message handleCreateUser(String username, String password, String repeatedPassword, String firstname, String lastname, String bio, String birthDate, String securityQuestionAnswer,int type) {
+    public WarningMessage handleCreateUser(String username, String password, String repeatedPassword, String firstname, String lastname, String bio, String birthDate, String securityQuestionAnswer,int type) {
         if (this.doesUserExist(username)) {
-            return Message.USERNAME_EXIST;
+            return WarningMessage.USERNAME_EXIST;
         }
-        Message message;
-        if ((message = this.validatePassword(password, repeatedPassword)) != Message.SUCCESS) {
+        WarningMessage message;
+        if ((message = this.validatePassword(password, repeatedPassword)) != WarningMessage.SUCCESS) {
             return message;
         }
         LocalDate birthDay = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
@@ -51,7 +47,7 @@ public class WelcomeController extends Controller{
             new BusinessAccount(firstname, lastname, username, password, bio, birthDay, securityQuestionAnswer,accountType);
         }
         new User(firstname, lastname, username, password, bio, birthDay, securityQuestionAnswer, accountType);
-        String query = " insert into users (username, password, first_name, last_name," +
+        /*String query = " insert into users (username, password, first_name, last_name," +
                 " bio, birth_date, security_answer, account_type)"
                 + " values (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -69,62 +65,62 @@ public class WelcomeController extends Controller{
             Jdbc.getInstance().closeConnection();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        return Message.SUCCESS;
+        }*/
+        return WarningMessage.SUCCESS;
     }
 
-    public Message validatePassword(String password, String repeatedPassword) {
+    public WarningMessage validatePassword(String password, String repeatedPassword) {
         if (!password.equals(repeatedPassword))
-            return Message.MISMATCH_PASSWORD;
+            return WarningMessage.MISMATCH_PASSWORD;
         if (password.length() < 8)
-            return Message.SHORT_PASSWORD;
+            return WarningMessage.SHORT_PASSWORD;
         if (password.length() > 20)
-            return Message.LONG_PASSWORD;
+            return WarningMessage.LONG_PASSWORD;
         if (!this.isAlphaNumeric(password))
-            return Message.NON_ALPHA_NUMERIC_PASSWORD;
+            return WarningMessage.NON_ALPHA_NUMERIC_PASSWORD;
 
-        return Message.SUCCESS;
+        return WarningMessage.SUCCESS;
     }
 
     private boolean isAlphaNumeric(String password) {
         return password.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$");
     }
 
-    public Message handleLogin(String username, String password) {
+    public WarningMessage handleLogin(String username, String password) {
         if (!this.doesUserExist(username)) {
-            return Message.USER_DOES_NOT_EXIST;
+            return WarningMessage.USER_DOES_NOT_EXIST;
         }
 
         User user = User.getUserByUsername(username);
         if (user.getPassword().equals(password)) {
             Menu.setLoggedInUser(user);
-            return Message.SUCCESS;
+            return WarningMessage.SUCCESS;
         }
-        return Message.INCORRECT_PASSWORD;
+        return WarningMessage.INCORRECT_PASSWORD;
     }
 
-    public Message handlePasswordChange(String username ,String password)
+    public WarningMessage handlePasswordChange(String username ,String password)
     {
-        Message message;
-        if ((message = this.validatePassword(password, password)) != Message.SUCCESS) {
+        WarningMessage message;
+        if ((message = this.validatePassword(password, password)) != WarningMessage.SUCCESS) {
             return message;
         }
         User user=User.getUserByUsername(username);
         user.setPassword(password);
-        return Message.SUCCESS;
+        return WarningMessage.SUCCESS;
     }
 
     boolean doesUserExist(String username) {
         return User.getUserByUsername(username) != null;
     }
 
-    public Message checkSecurityAnswer(String username, String answer) {
+    public WarningMessage checkSecurityAnswer(String username, String answer) {
         User user = User.getUserByUsername(username);
 
         if (user.getSecurityAnswer().equals(answer)) {
-            return Message.SUCCESS;
+            return WarningMessage.SUCCESS;
         }
-        return Message.WRONG_ANSWER;
+        return WarningMessage.WRONG_ANSWER;
     }
 
 }
