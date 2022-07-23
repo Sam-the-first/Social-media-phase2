@@ -28,9 +28,11 @@ public class PostMenu extends Menu{
 
     private User user;
     private PostController controller;
+    private LoggedInMenu loggedInMenu;
 
-    PostMenu(String username) {
+    PostMenu(String username, LoggedInMenu loggedInMenu) {
         user = User.getUserByUsername(username);
+        this.loggedInMenu = loggedInMenu;
         controller = new PostController(user);
     }
 

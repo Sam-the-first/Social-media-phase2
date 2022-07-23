@@ -20,7 +20,11 @@ public enum WarningMessage {
     USERNAME_EXIST("username exist"),
     LONG_BIO("maximum bio size is 15"),
     LONG_TEXT("maximum texts size is 1200"),
-    POST_DOES_NOT_EXIST("post does not exist");
+    POST_DOES_NOT_EXIST("post does not exist"),
+    GROUP_CREATED_SUCCESSFULLY("group created successfully"),
+    EDITED_SUCCESSFULLY("edited successfully"),
+    YOU_CANT_HAVE_CHAT_WITH_YOURSELF("you cant have chat with yourself")
+    ;
 
 
 

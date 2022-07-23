@@ -43,7 +43,7 @@ public class SearchController {
                 }
             }
         }
-        Collections.sort(containedUser,new UserComparator(user,searchKey));
+        Collections.sort(containedUser,new UserComprator(user,searchKey));
         return containedUser;
     }
 

@@ -28,14 +28,17 @@ public class SearchMenu extends Menu {
 
     private User user;
     private SearchController controller;
+    private LoggedInMenu loggedInMenu;
 
-    SearchMenu(String username) {
+    SearchMenu(String username, LoggedInMenu loggedInMenu) {
         user = User.getUserByUsername(username);
+        this.loggedInMenu = loggedInMenu;
         controller = new SearchController(user);
     }
 
     @Override
     public void run() {
+        showOptions();
         String choice=this.getChoice();
         switch (choice)
         {
@@ -46,7 +49,7 @@ public class SearchMenu extends Menu {
                 searchPosts();
                 break;
             case "3":
-
+                loggedInMenu.run();
                 break;
             default:
                 System.out.println(WarningMessage.INVALID_CHOICE);
@@ -90,8 +93,11 @@ public class SearchMenu extends Menu {
         {
             case "1":
                 controller.FollowUnfollow(user);
+                showProfile(user);
                 break;
             case "2":
+                ChatMenu chatMenu=new ChatMenu(this.user,user,loggedInMenu);
+                chatMenu.run();
                 break;
         }
     }
@@ -119,6 +125,7 @@ public class SearchMenu extends Menu {
         System.out.println("4. Show " + user.getFirstname() + "'s Followers");
         System.out.println("5. Show " + user.getFirstname() + "'s Followings");
         System.out.println("6. Block");
+        System.out.println("7. Previous Menu");
     }
 
 }

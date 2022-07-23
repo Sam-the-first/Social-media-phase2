@@ -8,7 +8,7 @@ public class User {
 
     public final static ArrayList<User> users = new ArrayList<>();
     public static final String SECURITY_QUESTION = "What was your best friend's name in high school?";
-    public static Comparator<? super User> searchComprator;
+    public static Comparator<? super User> searchComparator;
 
 
     private String username;
@@ -22,6 +22,7 @@ public class User {
 
     private ArrayList<User> followings=new ArrayList<>();
     private ArrayList<User> followers=new ArrayList<>();
+    private ArrayList<Chat> chats=new ArrayList<>();
 
     public User(String firstname, String lastname, String username, String password,String bio, LocalDate birthDate, String securityAnswer, String type) {
         this.firstname = firstname;
@@ -76,6 +77,11 @@ public class User {
         this.lastname = lastname;
     }
 
+    public String getName()
+    {
+        return firstname+" "+lastname;
+    }
+
     public String getBio() {
         return bio;
     }
@@ -120,6 +126,14 @@ public class User {
     public void removeFollowers(User user)
     {
 
+    }
+    public void addChat(Chat chat)
+    {
+        chats.add(chat);
+    }
+
+    public ArrayList<Chat> getChats() {
+        return chats;
     }
 
     @Override

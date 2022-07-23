@@ -4,6 +4,7 @@ import Controllers.ProfileController;
 import Controllers.WelcomeController;
 import Enums.WarningMessage;
 import Models.User;
+import com.mysql.cj.log.Log;
 
 public class ProfileMenu extends Menu{
 
@@ -28,9 +29,11 @@ public class ProfileMenu extends Menu{
 
     private User user;
     private ProfileController controller;
+    private LoggedInMenu loggedInMenu;
 
-    ProfileMenu(String username) {
+    ProfileMenu(String username, LoggedInMenu loggedInMenu) {
         user = User.getUserByUsername(username);
+        this.loggedInMenu = loggedInMenu;
         controller = new ProfileController(user);
     }
 
@@ -39,7 +42,7 @@ public class ProfileMenu extends Menu{
 
         this.showOptions();
 
-        String choice=this.getChoice();
+        String choice = this.getChoice();
 
         switch (choice) {
             case "1":
@@ -95,17 +98,17 @@ public class ProfileMenu extends Menu{
         this.run();
     }
 
+    //TO_DO
     private void changeSecurityQuestionAnswer() {
         String securityQuestion = getInput(User.SECURITY_QUESTION);
         this.run();
     }
-
+    //TO_DO
     private void changeBirthDate() {
         this.run();
     }
 
     private void backToLoggedInMenu() {
-        LoggedInMenu loggedInMenu = new LoggedInMenu(user.getUsername());
         loggedInMenu.run();
     }
 

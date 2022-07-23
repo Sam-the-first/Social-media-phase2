@@ -27,7 +27,6 @@ public class WelcomeMenu extends Menu{
 
     @Override
     public void run() {
-        Jdbc.getInstance().initialize();
         this.showOptions();
 
         String choice = this.getChoice();
