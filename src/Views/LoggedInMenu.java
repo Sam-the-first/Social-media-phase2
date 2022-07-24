@@ -131,6 +131,7 @@ public class LoggedInMenu extends Menu {
                 startChat();
                 break;
             case "3":
+                run();
                 break;
             default:
                 System.out.println(WarningMessage.INVALID_CHOICE);

@@ -44,7 +44,7 @@ public class ProfileMenu extends Menu{
             case "6":
                 processOfBlock();
                 break;
-            case "8":
+            case "7":
                 backToLoggedInMenu();
                 break;
             default:

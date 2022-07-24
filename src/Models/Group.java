@@ -52,7 +52,9 @@ public class Group extends Chat{
     }
 
     public void deleteGroup() {
-
+        for (User user : getUsers()) {
+            user.removeChat(this);
+        }
     }
 
     @Override
@@ -62,5 +64,15 @@ public class Group extends Chat{
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
+    }
+
+    public void kick(User user) {
+        getUsers().remove(user);
+        user.removeChat(this);
+    }
+
+    public void addMember(User user) {
+        getUsers().add(user);
+        user.addChat(this);
     }
 }

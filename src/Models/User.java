@@ -175,4 +175,8 @@ public class User {
     public boolean hasBlcoked(User sender) {
        return blocked.contains(sender);
     }
+
+    public void removeChat(Chat chat) {
+        chats.remove(chat);
+    }
 }

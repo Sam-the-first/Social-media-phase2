@@ -17,7 +17,7 @@ public class GroupController extends ChatController{
         super(sender,group);
         this.sender = sender;
         this.group = group;
-        ArrayList<User> receivers = new ArrayList<>(group.getUsers()) ;
+         receivers = new ArrayList<>(group.getUsers()) ;
         receivers.remove(sender);
        // super.setChat(group);
     }

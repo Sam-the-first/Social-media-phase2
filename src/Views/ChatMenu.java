@@ -1,6 +1,7 @@
 package Views;
 
 import Controllers.ChatController;
+import Controllers.GroupController;
 import Enums.WarningMessage;
 import Models.Chat;
 import Models.Group;
@@ -163,10 +164,18 @@ public class ChatMenu extends Menu {
         else {
             Chat chat=user1.getChats().get(choice-2);
             if(chat instanceof Group) {
-
+                Group group=(Group) chat;
+                GroupController groupController=new GroupController(user1,group);
+                groupController.forwardedInto(message);
+                run();
             }
             else {
-                ChatController chatController = new ChatController(chat);
+                User user;
+                if(chat.getUser1()==user1)
+                    user=chat.getUser2();
+                else
+                    user=chat.getUser1();
+                ChatController chatController = new ChatController(user1,user);
                 chatController.forwardedInto(message);
                 run();
             }

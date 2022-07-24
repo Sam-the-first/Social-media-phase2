@@ -25,6 +25,9 @@ public class GroupMenu extends ChatMenu {
     GroupMenu(User user, Group group, GroupAdminController controller)
     {
         super(user,group,controller);
+        this.group=group;
+        this.sender=user;
+        this.controller=controller;
 
     }
 
@@ -55,7 +58,7 @@ public class GroupMenu extends ChatMenu {
         }
     }
 
-    private void showGroupProfile() {
+    public void showGroupProfile() {
         System.out.println(group);
         int i=1;
         for (User user : group.getUsers()) {
@@ -95,8 +98,8 @@ public class GroupMenu extends ChatMenu {
         System.out.println("1. Send new message");
         System.out.println("2. View unseen messages");
         System.out.println("3. View previous messages");
-        System.out.println("4. Group profile");
-        System.out.println("5. Search");
+        System.out.println("4. Search");
+        System.out.println("5. Group profile");
         System.out.println("6. Back to main menu ");
     }
 }

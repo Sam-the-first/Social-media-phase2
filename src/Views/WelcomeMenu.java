@@ -56,8 +56,14 @@ public class WelcomeMenu extends Menu{
         String securityQuestionAnswer = this.getInput("answer this security question: " + User.SECURITY_QUESTION);
         this.showTypesOfAccount();
         String choice=this.getChoice();
-        WarningMessage message=this.controller.handleCreateUser(username, password, repeatedPassword, firstname, lastname, bio, birthDate, securityQuestionAnswer,Integer.parseInt(choice));
-        System.out.println(message == WarningMessage.SUCCESS ? "user created successfully" : message);
+        try {
+            WarningMessage message = this.controller.handleCreateUser(username, password, repeatedPassword, firstname, lastname, bio, birthDate, securityQuestionAnswer, Integer.parseInt(choice));
+            System.out.println(message == WarningMessage.SUCCESS ? "user created successfully" : message);
+        }
+        catch (Exception e)
+        {
+            System.out.println(WarningMessage.INVALID_CHOICE);
+        }
         this.run();
     }
 

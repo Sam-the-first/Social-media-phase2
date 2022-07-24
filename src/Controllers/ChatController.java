@@ -38,11 +38,7 @@ public class ChatController {
         this.chat=chat;
     }
 
-    public ChatController(Chat chat) {
-        sender = chat.getUser1();
-        receiver = chat.getUser2();
-        this.chat = chat;
-    }
+
 
     public WarningMessage sendNewMessage(String text) {
         if(receiver.hasBlcoked(sender))
