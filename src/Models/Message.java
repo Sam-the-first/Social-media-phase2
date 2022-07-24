@@ -14,36 +14,32 @@ public class Message {
     private Message replied;
     private User sender;
     private User forwardedFrom;
+    private boolean deleted = false;
     private ArrayList<User> receivers=new ArrayList<>();
-    private boolean deleted=false;
     public Message(String text, LocalDateTime date, User sender, User receiver) {
-        this.text=text;
-        this.date=date;
-        this.sender=sender;
+        this.text = text;
+        this.date = date;
+        this.sender = sender;
         this.receivers.add(receiver);
-        //seen=false;
     }
+
     public Message(Message message, LocalDateTime date, User sender, User receiver) {
-        this.text=message.getText();
-        this.date=date;
-        this.sender=sender;
+        this.text = message.getText();
+        this.date = date;
+        this.sender = sender;
         this.receivers.add(receiver);
-        forwardedFrom=message.getSender();
+        forwardedFrom = message.getSender();
+    }
+
+    public Message(String text, LocalDateTime date, User sender, ArrayList<User> receiver) {
+        this.text = text;
+        this.date = date;
+        this.sender = sender;
+        this.receivers = receiver;
     }
 
     public boolean isDeleted() {
         return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public Message(String text, LocalDateTime date, User sender, ArrayList<User> receiver) {
-        this.text=text;
-        this.date=date;
-        this.sender=sender;
-        this.receivers=receiver;
     }
 
     public User getForwardedFrom() {
@@ -112,25 +108,23 @@ public class Message {
         else
             return false;
     }
-
-    public void deleteMessage(User user)
-    {
-        if(user==sender)
-            deleted=true;
+    public void deleteMessage(User user) {
+        if(user == sender)
+            deleted = true;
         else
             receivers.remove(user);
     }
-    public boolean canSee(User user)
-    {
-        if(user==sender) {
+
+    public boolean canSee(User user) {
+        if(user == sender) {
             if(deleted)
-            return false;
+                return false;
             else
                 return true;
         }
-        if(!receivers.contains(user)) {
+        if(!receivers.contains(user))
             return false;
-        }
         return true;
     }
+
 }

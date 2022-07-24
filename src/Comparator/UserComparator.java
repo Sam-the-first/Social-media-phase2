@@ -1,14 +1,13 @@
-package Controllers;
+package Comparator;
 
 import Models.User;
 
 import java.util.Comparator;
 
-public class UserComprator implements Comparator<User> {
+public class UserComparator implements Comparator<User> {
     User user;
     String searchKey;
-    UserComprator(User user,String searchKey)
-    {
+    public UserComparator(User user, String searchKey) {
         this.user=user;
         this.searchKey=searchKey;
     }

@@ -2,29 +2,12 @@ package Views;
 
 import Controllers.SearchController;
 import Enums.WarningMessage;
+import Models.Post;
 import Models.User;
 
 import java.util.ArrayList;
 
 public class SearchMenu extends Menu {
-    /*private static SearchMenu instance = null;
-
-    private SearchController controller;
-
-    private SearchMenu() {
-        this.controller = SearchController.getInstance();
-    }
-
-    private static void setInstance(SearchMenu instance) {
-        SearchMenu.instance = instance;
-    }
-
-    public static SearchMenu getInstance() {
-        if (SearchMenu.instance == null) {
-            SearchMenu.setInstance(new SearchMenu());
-        }
-        return SearchMenu.instance;
-    }*/
 
     private User user;
     private SearchController controller;
@@ -38,8 +21,8 @@ public class SearchMenu extends Menu {
 
     @Override
     public void run() {
-        showOptions();
-        String choice=this.getChoice();
+        this.showOptions();
+        String choice = this.getChoice();
         switch (choice)
         {
             case "1":
@@ -49,7 +32,7 @@ public class SearchMenu extends Menu {
                 searchPosts();
                 break;
             case "3":
-                loggedInMenu.run();
+                backToLoggedInMenu();
                 break;
             default:
                 System.out.println(WarningMessage.INVALID_CHOICE);
@@ -58,52 +41,85 @@ public class SearchMenu extends Menu {
     }
 
     private void searchOtherUsers() {
-        String searchKey = getInput("search...");
+        String searchKey = getInput("search for...");
         ArrayList<User> searchedUsers = controller.searchUsers(searchKey);
         for (int i = 0; i < searchedUsers.size(); i++) {
             int j = i + 1;
             System.out.println(j + ". username: "
-                    + searchedUsers.get(i).getUsername() + " name: "
-                    + searchedUsers.get(i).getFirstname() + " "
-                    + searchedUsers.get(i).getLastname()
+                    + searchedUsers.get(i).getUsername() + "\n" +
+                    "name: " + searchedUsers.get(i).getFirstname() +
+                    " " + searchedUsers.get(i).getLastname()
             );
         }
 
-        System.out.println(Integer.toString(searchedUsers.size() + 1)+". Previous Menu");
+        System.out.println((searchedUsers.size() + 1) + ". Previous Menu");
 
         int choice = Integer.parseInt(this.getChoice());
+        while (choice > searchedUsers.size() + 1) {
+            System.out.println("enter valid input.");
+            choice = Integer.parseInt(this.getChoice());
+        }
 
         if(choice == searchedUsers.size() + 1)
             this.run();
         else if(choice < searchedUsers.size() + 1) {
             showProfile(searchedUsers.get(choice - 1));
-
-        }
-        else {
-            System.out.println("invalid input");
-            this.run();
         }
     }
 
     private void showProfile(User user) {
         System.out.println(user.toString2());
-        showOtherUsersOption(user);
-        String choice=getChoice();
-        switch (choice)
-        {
-            case "1":
-                controller.FollowUnfollow(user);
-                showProfile(user);
-                break;
-            case "2":
-                ChatMenu chatMenu=new ChatMenu(this.user,user,loggedInMenu);
-                chatMenu.run();
-                break;
+        String input = this.getInput("Do you want to do any action with user? (yes/no)");
+        if (input.equalsIgnoreCase("yes")) {
+            ProfileMenu profileMenu = new ProfileMenu(this.user.getUsername(), this.loggedInMenu, this, user);
+            profileMenu.run();
         }
+        else if (input.equalsIgnoreCase("no"))
+            this.run();
     }
 
     private void searchPosts() {
+        String searchKey = getInput("search for...");
+        ArrayList<Post> searchedPosts = controller.searchPosts(searchKey);
+        for (int i = 1; i < searchedPosts.size() + 1; i++) {
+            System.out.println(i + "post text: \n" +
+                    searchedPosts.get(i - 1).getText() + "\n" +
+                    "by: " + searchedPosts.get(i - 1).getCommenter().getUsername() + "\n" +
+                    "at: " + searchedPosts.get(i - 1).getFormattedDateTime()
+            );
+        }
+        System.out.println((searchedPosts.size() + 1) + ". Previous Menu");
+        System.out.println("choose post number to see details of that or choose "
+                        + (searchedPosts.size() + 1) +
+                        "to go to search menu.");
 
+        int choice = Integer.parseInt(this.getChoice());
+        while (choice > searchedPosts.size() + 1) {
+            System.out.println("enter valid input.");
+            choice = Integer.parseInt(this.getChoice());
+        }
+        if(choice == searchedPosts.size() + 1)
+            this.run();
+        else if(choice < searchedPosts.size() + 1) {
+            if (searchedPosts.get(choice - 1).getCommenter().equals(user))
+                showPostSettingOptions(searchedPosts.get(choice - 1));
+            else
+                showPostOptions(searchedPosts.get(choice - 1));
+        }
+    }
+
+    private void showPostSettingOptions(Post post) {
+        PostSettingMenu postSettingMenu = new PostSettingMenu(user.getUsername(), loggedInMenu, post);
+        postSettingMenu.run();
+    }
+
+    private void showPostOptions(Post post) {
+        PostMenu postMenu = new PostMenu(user.getUsername(), post, loggedInMenu, this);
+        postMenu.run();
+    }
+
+    private void backToLoggedInMenu() {
+        loggedInMenu.run();
     }
 
     @Override
@@ -114,18 +130,5 @@ public class SearchMenu extends Menu {
         System.out.println("3. Previous Menu");
     }
 
-    protected void showOtherUsersOption(User user) {
-        System.out.println("Enter one of these options: ");
-        if(LoggedInMenu.getLoggedInUser().getFollowings().contains(user))
-            System.out.println("1. Unfollow");
-        else
-            System.out.println("1. Follow");
-        System.out.println("2. Chat");
-        System.out.println("3. Show " + user.getFirstname() + "'s Posts");
-        System.out.println("4. Show " + user.getFirstname() + "'s Followers");
-        System.out.println("5. Show " + user.getFirstname() + "'s Followings");
-        System.out.println("6. Block");
-        System.out.println("7. Previous Menu");
-    }
 
 }

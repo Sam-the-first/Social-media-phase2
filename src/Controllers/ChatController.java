@@ -1,5 +1,6 @@
 package Controllers;
 
+import Comparator.MessageComparator;
 import Enums.WarningMessage;
 import Models.Chat;
 import Models.Message;
@@ -15,25 +16,18 @@ public class ChatController {
     private User receiver;
     private Chat chat;
 
-    public Chat getChat() {
-        return chat;
-    }
-
     public ChatController(User user1, User user2) {
         this.sender = user1;
         this.receiver = user2;
         chat = Chat.getChat(user1,user2);
-        if(chat == null) {
-            chat = new Chat(user1, user2);
-            user1.addChat(chat);
-            user2.addChat(chat);
-        }
+        if(chat == null)
+            chat = new Chat(user1 ,user2);
     }
-    public ChatController(Chat chat)
-    {
-        sender=chat.getUser1();
-        receiver=chat.getUser2();
-        this.chat=chat;
+
+    public ChatController(Chat chat) {
+        sender = chat.getUser1();
+        receiver = chat.getUser2();
+        this.chat = chat;
     }
 
     public WarningMessage sendNewMessage(String text) {
@@ -56,7 +50,6 @@ public class ChatController {
         Collections.sort(chat.getMessages(),new MessageComparator());
         ArrayList<Message> messages = new ArrayList<>();
         for (int i = 0; i <(Math.min(n,chat.getMessages().size())) ; i++) {
-            if(chat.getMessages().get(i).canSee(sender))
             messages.add(chat.getMessages().get(i));
         }
         return messages;
@@ -67,25 +60,30 @@ public class ChatController {
         chat.addMessage(newMessage);
         newMessage.setReplied(message);
     }
-    public void editMessage(Message message,String text)
-    {
-        message.setText(text);
+
+    public WarningMessage editMessage(Message message,String text) {
+        if(message.getForwardedFrom() != null) {
+            message.setText(text);
+            return WarningMessage.EDITED_SUCCESSFULLY;
+        }
+        else
+            return WarningMessage.MESSAGE_IS_FORWARDED;
     }
-    public void deleteMessageForMe(Message message)
-    {
+
+    public void deleteMessageForMe(Message message) {
         message.deleteMessage(sender);
     }
-    public void deleteMessageForEveryone(Message message)
-    {
+
+    public void deleteMessageForEveryone(Message message) {
         chat.getMessages().remove(message);
     }
-    public void forwardedInto(Message message)
-    {
+
+    public void forwardedInto(Message message) {
         Message message1=new Message(message,LocalDateTime.now(),sender,receiver);
         chat.addMessage(message1);
     }
-    public ArrayList<Message> searchMessage(String searchKey)
-    {
+
+    public ArrayList<Message> searchMessage(String searchKey) {
         ArrayList<Message> messages=new ArrayList<>();
         for (Message message : chat.getMessages()) {
             if(message.getText().contains(searchKey))

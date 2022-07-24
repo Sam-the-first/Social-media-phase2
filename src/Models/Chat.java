@@ -3,6 +3,7 @@ package Models;
 import java.util.ArrayList;
 
 public class Chat {
+
     private static int counter=1;
     private int id;
     private ArrayList<User> users=new ArrayList<>();
@@ -11,7 +12,9 @@ public class Chat {
 
     public static Chat getChat(User user1, User user2) {
         for (Chat chat : chats) {
-            if(chat.getUsers().contains(user1)&&chat.getUsers().contains(user2))
+            if(chat.getUser1() == user1 && chat.getUser2() == user2)
+                return chat;
+            if(chat.getUser2() == user1 && chat.getUser1() == user2)
                 return chat;
         }
         return null;
@@ -21,11 +24,11 @@ public class Chat {
         users.add(user1);
         users.add(user2) ;
         chats.add(this);
-        id=counter;
+        id = counter;
         counter++;
     }
-    public Chat()
-    {
+
+    public Chat() {
         chats.add(this);
     }
 
@@ -36,7 +39,6 @@ public class Chat {
     public User getUser1() {
         return users.get(0);
     }
-
 
     public User getUser2() {
         return users.get(1);

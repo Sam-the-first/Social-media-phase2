@@ -31,6 +31,17 @@ public class Post extends Comment{
         return null;
     }
 
+    public String getFormattedDateTime() {
+        return formattedDateTime;
+    }
+
+    public boolean isAfter(Post post) {
+        if(time.isAfter(post.getTime()))
+            return true;
+        else
+            return false;
+    }
+
     @Override
     public String toString() {
         return "POST: \n" +
@@ -41,4 +52,5 @@ public class Post extends Comment{
                 "Count of comments: " + getComments().size() + "\n" +
                 "Viewers: " + viewers;
     }
+
 }

@@ -1,28 +1,14 @@
 package Controllers;
 
+import Comparator.PostComparator;
+import Comparator.UserComparator;
+import Models.Post;
 import Models.User;
-import Views.LoggedInMenu;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class SearchController {
-
-    /*private static SearchController instance = null;
-    private User user = LoggedInMenu.getLoggedInUser();
-
-    private SearchController() {}
-
-    private static void setInstance(SearchController instance) {
-        SearchController.instance = instance;
-    }
-
-    public static SearchController getInstance() {
-        if (SearchController.instance == null)
-            SearchController.setInstance(new SearchController());
-
-        return SearchController.instance;
-    }*/
 
     private User user;
 
@@ -43,16 +29,19 @@ public class SearchController {
                 }
             }
         }
-        Collections.sort(containedUser,new UserComprator(user,searchKey));
+        Collections.sort(containedUser,new UserComparator(user,searchKey));
         return containedUser;
     }
 
-    public void FollowUnfollow(User user) {
-        if(this.user.getFollowings().contains(user)) {
-            this.user.removeFollowing(user);
+    public ArrayList<Post> searchPosts(String searchKey) {
+        ArrayList<Post> posts = Post.posts;
+        ArrayList<Post> containedPosts = new ArrayList<>();
+        for (Post post : posts) {
+            if (post.getText().contains(searchKey))
+                containedPosts.add(post);
         }
-        else {
-            this.user.addFollowing(user);
-        }
+
+        Collections.sort(containedPosts,new PostComparator());
+        return containedPosts;
     }
 }

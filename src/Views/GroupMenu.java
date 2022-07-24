@@ -9,8 +9,7 @@ public class GroupMenu extends Menu {
     Group group;
     GroupController controller;
     LoggedInMenu loggedInMenu;
-    GroupMenu(User user,Group group,LoggedInMenu loggedInMenu)
-    {
+    GroupMenu(User user, Group group, LoggedInMenu loggedInMenu) {
         this.user=user;
         this.group=group;
         this.loggedInMenu=loggedInMenu;
@@ -20,8 +19,7 @@ public class GroupMenu extends Menu {
     public void run() {
         showOptions();
         String choice=getChoice();
-        switch (choice)
-        {
+        switch (choice) {
             case "1":
                 newMessage();
                 break;
@@ -36,6 +34,7 @@ public class GroupMenu extends Menu {
                 break;
         }
     }
+
     public void newMessage() {
         String text = getInput("Enter your new message");
         System.out.println(controller.sendNewMessage(text));

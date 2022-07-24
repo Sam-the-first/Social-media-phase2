@@ -21,12 +21,8 @@ public class ChatMenu extends Menu {
         this.user2 = user2;
         this.loggedInMenu = loggedInMenu;
         controller = new ChatController(user1,user2);
-        chat=controller.getChat();
     }
-    ChatMenu()
-    {
 
-    }
     @Override
     public void run() {
         showOptions();
@@ -46,17 +42,11 @@ public class ChatMenu extends Menu {
                 break;
             case "5":
                 loggedInMenu.run();
-                break;
             default:
-
+                System.out.println(WarningMessage.INVALID_CHOICE);
+                this.run();
         }
 
-    }
-    public void searchMessage()
-    {
-        String searchKey=getInput("search");
-        ArrayList<Message> messages=controller.searchMessage(searchKey);
-        showMessageList(messages);
     }
 
     public void newMessage() {
@@ -83,7 +73,7 @@ public class ChatMenu extends Menu {
             System.out.print(j + ". ");
             showMessage(message);
             if(user1!=chat.getUser1())
-            message.setSeen(user1);
+                message.setSeen(user1);
         }
         int j= messages.size()+1;
         System.out.println(j + ". Previous Menu");
@@ -113,12 +103,12 @@ public class ChatMenu extends Menu {
                 reply(message);
                 break;
             case "4":
-                if(message.getSender()==user1)
+                if(message.getSender() == user1)
                     edit(message);
                 else run();
                 break;
             case "5":
-                if(message.getSender()==user1)
+                if(message.getSender() == user1)
                     run();
                 else
                     System.out.println(WarningMessage.INVALID_CHOICE);
@@ -128,114 +118,117 @@ public class ChatMenu extends Menu {
                 messageOption(message);
         }
     }
-    public void forward(Message message)
-    {
+
+    public void forward(Message message) {
         System.out.println("1. Cancel");
         int i=2;
+
         for (Chat chat : user1.getChats()) {
             String name;
-            if(chat instanceof Group)
-            {
+            if(chat instanceof Group) {
                 Group group=(Group) chat;
                 name=group.getName();
             }
             else {
-                if(chat.getUser1()==user1) {
+                if(chat.getUser1()==user1)
                     name = chat.getUser2().getName();
-                }
-                else {
+                else
                     name = chat.getUser1().getName();
-                }
             }
             System.out.println(i+". "+name);
             i++;
         }
+
         int choice=Integer.parseInt(getChoice());
+
         if(choice==1)
             messageOption(message);
         else if(choice>user1.getChats().size()+1) {
             System.out.println(WarningMessage.INVALID_CHOICE);
             messageOption(message);
         }
-        else
-        {
+        else {
             Chat chat=user1.getChats().get(choice-2);
-            if(chat instanceof Group)
-            {
+            if(chat instanceof Group) {
 
             }
-            else
-            {
-               ChatController chatController=new ChatController(chat);
-               chatController.forwardedInto(message);
-               run();
+            else {
+                ChatController chatController = new ChatController(chat);
+                chatController.forwardedInto(message);
+                run();
             }
         }
     }
-    public void edit(Message message)
-    {
+
+    public void edit(Message message) {
         String newMessage=getInput("edit");
-        controller.editMessage(message,newMessage);
-        System.out.println(WarningMessage.EDITED_SUCCESSFULLY);
+        System.out.println(controller.editMessage(message,newMessage));
         messageOption(message);
     }
 
     public void showMessage(Message message) {
         String sender;
-        String seen="";
-        if(message.getSender()==user1) {
+        String seen = "";
+        if(message.getSender() == user1) {
             sender = "you";
             if(message.isSeen())
                 seen="seen";
             else
-                seen="notseen";
+                seen="notSeen";
         }
-        else {
+        else
             sender = message.getSender().getFirstname();
-        }
+
         if(message.getForwardedFrom()!=null)
-        {
             System.out.println("forwarded from "+message.getForwardedFrom().getName());
-        }
-        if(message.getReplied()!=null)
-        {
-            Message reply=message.getReplied();
+
+        if(message.getReplied()!=null) {
+            Message reply = message.getReplied();
             String replyShow;
-            if(reply.getText().length()>10) {
+
+            if(reply.getText().length()>10)
                 replyShow =reply.getText().substring(0, 10);
-            }
+
             else
                 replyShow=reply.getText();
-            System.out.println("in reply to: "+replyShow);
+
+            System.out.println("in reply to: " + replyShow);
         }
-        System.out.println(message.getText()+" ---- "+"Sent By:"+sender+" ---- "+"at:"+message.getDate()+" ---- "+seen);
-        if(user1!=chat.getUser1())
-        message.setSeen(user1);
+
+        System.out.println(message.getText()+" ---- " + "Sent By:"+sender+" ---- "+"at:"+message.getDate()+" ---- "+seen);
+        if(user1 != chat.getUser1())
+            message.setSeen(user1);
     }
+
     public void deleteMessage(Message message) {
         System.out.println("1. Delete for me");
         System.out.println("2. Also Delete for "+user2.getFirstname());
+
         String choice=getChoice();
+
         if(choice.equals("1"))
-        {
             controller.deleteMessageForMe(message);
-        }
         else if(choice.equals("2"))
-        {
             controller.deleteMessageForEveryone(message);
-        }
         else {
             System.out.println(WarningMessage.INVALID_CHOICE);
             deleteMessage(message);
         }
-        run();
+
+        this.run();
     }
 
     public void reply(Message message) {
-        String text=getInput("Enter your new message");
+        String text = getInput("Enter your new message");
         controller.reply(message,text);
         System.out.println(WarningMessage.SUCCESS);
         run();
+    }
+
+    public void searchMessage() {
+        String searchKey=getInput("search");
+        ArrayList<Message> messages = controller.searchMessage(searchKey);
+        showMessageList(messages);
     }
 
     @Override

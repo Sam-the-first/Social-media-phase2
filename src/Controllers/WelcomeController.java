@@ -46,7 +46,7 @@ public class WelcomeController extends Controller{
             accountType = "Business";
             new BusinessAccount(firstname, lastname, username, password, bio, birthDay, securityQuestionAnswer,accountType);
         }
-       // new User(firstname, lastname, username, password, bio, birthDay, securityQuestionAnswer, accountType);
+        new User(firstname, lastname, username, password, bio, birthDay, securityQuestionAnswer, accountType);
         /*String query = " insert into users (username, password, first_name, last_name," +
                 " bio, birth_date, security_answer, account_type)"
                 + " values (?, ?, ?, ?, ?, ?, ?, ?)";

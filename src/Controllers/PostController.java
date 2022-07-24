@@ -1,59 +1,65 @@
 package Controllers;
 
 import Enums.WarningMessage;
+import Models.Comment;
+import Models.Like;
 import Models.Post;
 import Models.User;
-import Views.LoggedInMenu;
+
+import java.util.ArrayList;
 
 public class PostController extends Controller{
 
-    /*private static PostController instance = null;
-    private User user = LoggedInMenu.getLoggedInUser();
-
-    private PostController() {}
-
-    private static void setInstance (PostController instance) {
-        PostController.instance = instance;
-    }
-
-    public static PostController getInstance() {
-        if (PostController.instance == null) {
-            PostController.setInstance(new PostController());
-        }
-        return PostController.instance;
-    }*/
-
     private User user;
+    private Post post;
 
-    public PostController(User user) {
-        this.user=user;
+    public PostController(User user, Post post) {
+        this.user = user;
+        this.post = post;
     }
 
-    public WarningMessage handlePost(String text) {
-        if (text.length() > 1200)
-            return WarningMessage.LONG_TEXT;
-        new Post(text, user);
-        return WarningMessage.SUCCESS;
+    public void handleLike() {
+        Like like = new Like(user);
+        Like.likes.add(like);
+        ArrayList<Like> likes = new ArrayList<>(post.getLikes());
+        likes.add(like);
+        post.setLikes(likes);
     }
 
-    public WarningMessage handleDeletePost(String text) {
-        if (!doesPostExist(text)) {
-            return WarningMessage.POST_DOES_NOT_EXIST;
+    public void handleDeleteLike() {
+        if (post.getLikeByUser(user) != null) {
+            ArrayList<Like> likes = new ArrayList<>(post.getLikes());
+            likes.remove(post.getLikeByUser(user));
+            post.setLikes(likes);
         }
-        Post post = Post.getPostByText(text);
-        Post.posts.remove(post);
-        return WarningMessage.SUCCESS;
+        else
+            System.out.println(WarningMessage.YOU_HAVE_NOT_LIKE_IT_YET);
     }
 
-    public String handleShowPost(String text) {
-        if (!doesPostExist(text)) {
-            return "post does not exist";
+    public void handleComment(String text) {
+        Comment comment = new Comment(text, user);
+        Comment.allComments.add(comment);
+        ArrayList<Comment> comments = new ArrayList<>(post.getComments());
+        comments.add(comment);
+        post.setComments(comments);
+    }
+
+    public void handleDeleteComment() {
+        if (!post.getCommentsByUser(user).isEmpty()) {
+            ArrayList<Comment> comments = new ArrayList<>(post.getComments());
+            comments.removeAll(post.getCommentsByUser(user));
+            post.setComments(comments);
         }
-        Post post = Post.getPostByText(text);
-        return post.toString();
+        else
+            System.out.println(WarningMessage.YOU_HAVE_NOT_COMMENT_FOR_IT_YET);
     }
 
-    boolean doesPostExist (String text) {
-        return Post.getPostByText(text) != null;
+    public int countOfLikes() {
+        return post.getLikes().size();
     }
+
+    public ArrayList<Comment> handleShowComments() {
+        return post.getComments();
+    }
+
 }

@@ -1,6 +1,5 @@
 package Models;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -10,12 +9,12 @@ public class Group extends Chat{
     private String name;
     private String description;
 
-    public Group(User creator,  Set<User> users, String name, String description) {
+    public Group(User creator, Set<User> users, String name, String description) {
         super();
         getUsers().addAll(users);
-        this.creator=creator;
-        this.name=name;
-        this.description=description;
+        this.creator = creator;
+        this.name = name;
+        this.description = description;
     }
 
     public String getName() {
@@ -45,19 +44,19 @@ public class Group extends Chat{
     public Set<User> getAdmins() {
         return admins;
     }
-    public void addAdmin(User user)
-    {
+
+    public void addAdmin(User user) {
         admins.add(user);
     }
-    public void leaveGroup(User user)
-    {
+
+    public void leaveGroup(User user) {
         getUsers().remove(user);
         admins.remove(user);
-        if(user==creator)
+        if(user == creator)
             deleteGroup();
     }
-    public void deleteGroup()
-    {
+
+    public void deleteGroup() {
 
     }
 }

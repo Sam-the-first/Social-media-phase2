@@ -21,10 +21,16 @@ public enum WarningMessage {
     LONG_BIO("maximum bio size is 15"),
     LONG_TEXT("maximum texts size is 1200"),
     POST_DOES_NOT_EXIST("post does not exist"),
+    FOLLOWED_SUCCESSFULLY("user followed successfully"),
+    UNFOLLOWED_SUCCESSFULLY("user unfollowed successfully"),
+    NO_POST_YET("not post yet"),
+    NO_COMMENT_FOR_THIS("no comment for this"),
     GROUP_CREATED_SUCCESSFULLY("group created successfully"),
     EDITED_SUCCESSFULLY("edited successfully"),
-    YOU_CANT_HAVE_CHAT_WITH_YOURSELF("you cant have chat with yourself")
-    ;
+    YOU_CANT_HAVE_CHAT_WITH_YOURSELF("you cant have chat with yourself"),
+    MESSAGE_IS_FORWARDED("message is forwarded"),
+    YOU_HAVE_NOT_LIKE_IT_YET("you have not like it yet"),
+    YOU_HAVE_NOT_COMMENT_FOR_IT_YET("you have not comment for it yet");
 
 
 

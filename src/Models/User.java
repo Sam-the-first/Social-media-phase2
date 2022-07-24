@@ -20,9 +20,10 @@ public class User {
     private String securityAnswer;
     private String type;
 
-    private ArrayList<User> followings=new ArrayList<>();
-    private ArrayList<User> followers=new ArrayList<>();
-    private ArrayList<Chat> chats=new ArrayList<>();
+    private ArrayList<User> followings = new ArrayList<>();
+    private ArrayList<User> followers = new ArrayList<>();
+    private ArrayList<Post> posts = new ArrayList<>();
+    private ArrayList<Chat> chats = new ArrayList<>();
 
     public User(String firstname, String lastname, String username, String password,String bio, LocalDate birthDate, String securityAnswer, String type) {
         this.firstname = firstname;
@@ -73,13 +74,12 @@ public class User {
         return lastname;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public String getName() {
+        return firstname+" "+lastname;
     }
 
-    public String getName()
-    {
-        return firstname+" "+lastname;
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getBio() {
@@ -113,22 +113,30 @@ public class User {
     public ArrayList<User> getFollowers() {
         return followers;
     }
-    public void removeFollowing(User user)
-    {
+
+    public ArrayList<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(ArrayList<Post> posts) {
+        this.posts = posts;
+    }
+
+    public void removeFollowing(User user) {
         followings.remove(user);
-        user.getFollowers().remove(this);
+        user.getFollowers().remove(this); ////////???????????
     }
-    public void addFollowing(User user)
-    {
+
+    public void addFollowing(User user) {
         followings.add(user);
-        user.getFollowers().add(this);
+        user.getFollowers().add(this); ////////???????????
     }
-    public void removeFollowers(User user)
-    {
+    //TO-DO
+    public void removeFollowers(User user) {
 
     }
-    public void addChat(Chat chat)
-    {
+
+    public void addChat(Chat chat) {
         chats.add(chat);
     }
 
@@ -148,8 +156,8 @@ public class User {
                 ", securityAnswer='" + securityAnswer + '\'' +
                 '}';
     }
-    public String toString2()
-    {
+
+    public String toString2() {
         return "User{" +
                 "username='" + username + '\'' +
                 ", firstname='" + firstname + '\'' +

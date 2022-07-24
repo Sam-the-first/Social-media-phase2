@@ -1,111 +1,90 @@
 package Views;
 
+import Controllers.PostSettingController;
 import Controllers.ProfileController;
-import Controllers.WelcomeController;
 import Enums.WarningMessage;
 import Models.User;
-import com.mysql.cj.log.Log;
 
 public class ProfileMenu extends Menu{
 
-    /*private static ProfileMenu instance = null;
-
-    private ProfileController controller;
-
-    private ProfileMenu() {
-        this.controller = ProfileController.getInstance();
-    }
-
-    private static void setInstance(ProfileMenu instance) {
-        ProfileMenu.instance = instance;
-    }
-
-    public static ProfileMenu getInstance() {
-        if (ProfileMenu.instance == null)
-            ProfileMenu.setInstance(new ProfileMenu());
-
-        return ProfileMenu.instance;
-    }*/
-
     private User user;
+    private User userToCheck;
     private ProfileController controller;
+    private PostSettingController postController;
     private LoggedInMenu loggedInMenu;
+    private SearchMenu searchMenu;
 
-    ProfileMenu(String username, LoggedInMenu loggedInMenu) {
+    public ProfileMenu(String username, LoggedInMenu loggedInMenu, SearchMenu searchMenu, User userToCheck) {
         user = User.getUserByUsername(username);
         this.loggedInMenu = loggedInMenu;
+        this.searchMenu = searchMenu;
+        this.userToCheck = userToCheck;
         controller = new ProfileController(user);
     }
 
+
     @Override
     public void run() {
-
-        this.showOptions();
-
+        showOptions();
         String choice = this.getChoice();
-
         switch (choice) {
             case "1":
-                this.changeUsername();
+                processOfFollowUnfollow();
                 break;
             case "2":
-                changePassword();
+                processOfChat();
                 break;
             case "3":
-                changeBio();
+                processOfShowPosts();
                 break;
             case "4":
-                changeName();
+                processOfShowFollowers();
                 break;
             case "5":
-                changeSecurityQuestionAnswer();
+                processOfShowFollowings();
                 break;
             case "6":
-                changeBirthDate();
+                processOfBlock();
                 break;
             case "7":
+                backToSearchMenu();
+                break;
+            case "8":
                 backToLoggedInMenu();
+                break;
             default:
                 System.out.println(WarningMessage.INVALID_CHOICE);
                 this.run();
         }
     }
 
-    private void changeUsername() {
-        String username=this.getInput("Enter a Valid new Username");
-        System.out.println(controller.handleUsernameChange(LoggedInMenu.getLoggedInUser(),username));
-        this.run();
+    private void processOfFollowUnfollow() {
+        WarningMessage message = this.controller.followUnfollow(userToCheck);
+        System.out.println(message);
     }
 
-    private void changePassword() {
-        String password=this.getInput("Enter a new Password");
-        String repeatedPassword=this.getInput("Repeat your new password");
-        WarningMessage message = WelcomeController.getInstance().validatePassword(password,repeatedPassword);
-        System.out.println(message == WarningMessage.SUCCESS ? WelcomeController.getInstance().handlePasswordChange(LoggedInMenu.getLoggedInUser().getUsername(),password) : message);
-        this.run();
+    private void processOfChat() {
+        ChatMenu chatMenu = new ChatMenu(user, userToCheck, loggedInMenu);
+        chatMenu.run();
+    }
+    //TO-DO
+    private void processOfShowPosts() {
+
     }
 
-    private void changeBio() {
-        String bio =getInput("Enter your new bio");
-        System.out.println(controller.handleBioChange(bio));
-        this.run();
+    private void processOfShowFollowers() {
+        loggedInMenu.showFollowers(userToCheck);
     }
 
-    private void changeName() {
-        String firstname=getInput("Enter a new firstname");
-        String lastname=getInput("Enter a new lastname");
-        System.out.println(controller.handleNameChange(firstname,lastname));
-        this.run();
+    private void processOfShowFollowings() {
+        loggedInMenu.showFollowings(userToCheck);
+    }
+    //TO-DO
+    private void processOfBlock() {
     }
 
-    //TO_DO
-    private void changeSecurityQuestionAnswer() {
-        String securityQuestion = getInput(User.SECURITY_QUESTION);
-        this.run();
-    }
-    //TO_DO
-    private void changeBirthDate() {
-        this.run();
+    private void backToSearchMenu() {
+        searchMenu.run();
     }
 
     private void backToLoggedInMenu() {
@@ -115,12 +94,14 @@ public class ProfileMenu extends Menu{
     @Override
     protected void showOptions() {
         System.out.println("Enter one of these options: ");
-        System.out.println("1. Change Username");
-        System.out.println("2. Change Password");
-        System.out.println("3. Change bio");
-        System.out.println("4. Change Name");
-        System.out.println("5. Change SecurityQuestion");
-        System.out.println("6. Change BirthDate");
-        System.out.println("7. Previous Menu");
+        if(user.getFollowings().contains(userToCheck))
+            System.out.println("1. Unfollow");
+        else
+            System.out.println("1. Follow");
+        System.out.println("2. Chat");
+        System.out.println("3. Show " + userToCheck.getFirstname() + "'s Posts");
+        System.out.println("4. Show " + userToCheck.getFirstname() + "'s Followers");
+        System.out.println("5. Show " + userToCheck.getFirstname() + "'s Followings");
+        System.out.println("6. Block user");
     }
 }
