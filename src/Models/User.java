@@ -24,6 +24,7 @@ public class User {
     private ArrayList<User> followers = new ArrayList<>();
     private ArrayList<Post> posts = new ArrayList<>();
     private ArrayList<Chat> chats = new ArrayList<>();
+    private ArrayList<User> blocked=new ArrayList<>();
 
     public User(String firstname, String lastname, String username, String password,String bio, LocalDate birthDate, String securityAnswer, String type) {
         this.firstname = firstname;
@@ -118,8 +119,8 @@ public class User {
         return posts;
     }
 
-    public void setPosts(ArrayList<Post> posts) {
-        this.posts = posts;
+    public void addPosts(Post post) {
+        this.posts.add(post) ;
     }
 
     public void removeFollowing(User user) {
@@ -165,5 +166,13 @@ public class User {
                 ", bio='" + bio + '\'' +
                 ", birthDate=" + birthDate +
                 '}';
+    }
+
+    public void block(User userToCheck) {
+        blocked.add(userToCheck);
+    }
+
+    public boolean hasBlcoked(User sender) {
+       return blocked.contains(sender);
     }
 }

@@ -71,11 +71,13 @@ public class SearchMenu extends Menu {
         System.out.println(user.toString2());
         String input = this.getInput("Do you want to do any action with user? (yes/no)");
         if (input.equalsIgnoreCase("yes")) {
-            ProfileMenu profileMenu = new ProfileMenu(this.user.getUsername(), this.loggedInMenu, this, user);
+            ProfileMenu profileMenu = new ProfileMenu(this.user, this.loggedInMenu,  user);
             profileMenu.run();
         }
         else if (input.equalsIgnoreCase("no"))
             this.run();
+        else
+            showProfile(user);
     }
 
     private void searchPosts() {

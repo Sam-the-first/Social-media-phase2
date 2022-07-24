@@ -2,11 +2,13 @@ package Controllers;
 
 import Comparator.PostComparator;
 import Enums.WarningMessage;
+import Models.Group;
 import Models.Post;
 import Models.User;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Set;
 
 public class LoggedInController extends Controller{
 
@@ -20,9 +22,6 @@ public class LoggedInController extends Controller{
         if (text.length() > 1200)
             return WarningMessage.LONG_TEXT;
         Post post = new Post(text, user);
-        ArrayList<Post> posts = new ArrayList<>(user.getPosts());
-        posts.add(post);
-        user.setPosts(posts);
         return WarningMessage.SUCCESS;
     }
 
@@ -30,5 +29,11 @@ public class LoggedInController extends Controller{
         ArrayList<Post> posts = user.getPosts();
         Collections.sort(posts, new PostComparator());
         return posts;
+    }
+    public WarningMessage hadnleCreateGroup(User user, ArrayList<User> users, String name, String description)
+    {
+        Group group = new Group(user,users,name,description);
+      //  user.addChat(group);
+       return WarningMessage.GROUP_CREATED_SUCCESSFULLY;
     }
 }

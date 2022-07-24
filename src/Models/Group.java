@@ -1,20 +1,23 @@
 package Models;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Group extends Chat{
     private User creator;
-    private Set<User> admins=new HashSet<>();
     private String name;
     private String description;
 
-    public Group(User creator, Set<User> users, String name, String description) {
+    public Group(User creator, ArrayList<User> users, String name, String description) {
         super();
-        getUsers().addAll(users);
+        setUsers(users);
         this.creator = creator;
         this.name = name;
         this.description = description;
+        for (User user : users) {
+            user.addChat(this);
+        }
     }
 
     public String getName() {
@@ -41,22 +44,23 @@ public class Group extends Chat{
         this.creator = creator;
     }
 
-    public Set<User> getAdmins() {
-        return admins;
-    }
-
-    public void addAdmin(User user) {
-        admins.add(user);
-    }
 
     public void leaveGroup(User user) {
         getUsers().remove(user);
-        admins.remove(user);
         if(user == creator)
             deleteGroup();
     }
 
     public void deleteGroup() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Group{" +
+                "creator=" + creator +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

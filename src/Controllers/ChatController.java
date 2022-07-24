@@ -24,6 +24,20 @@ public class ChatController {
             chat = new Chat(user1 ,user2);
     }
 
+    public ChatController(User sender,Chat chat) {
+        this.sender = sender;
+        this.chat = chat;
+    }
+
+    public Chat getChat()
+    {
+        return chat;
+    }
+    public void setChat(Chat chat)
+    {
+        this.chat=chat;
+    }
+
     public ChatController(Chat chat) {
         sender = chat.getUser1();
         receiver = chat.getUser2();
@@ -31,15 +45,19 @@ public class ChatController {
     }
 
     public WarningMessage sendNewMessage(String text) {
-        Message message = new Message(text, LocalDateTime.now(),sender,receiver);
-        chat.addMessage(message);
-        return WarningMessage.SUCCESS;
+        if(receiver.hasBlcoked(sender))
+            return WarningMessage.YOU_ARE_BLOCKED;
+        else {
+            Message message = new Message(text, LocalDateTime.now(), sender, receiver);
+            chat.addMessage(message);
+            return WarningMessage.SUCCESS;
+        }
     }
 
     public ArrayList<Message> getUnSeenMessages() {
         ArrayList<Message> messages = new ArrayList<>();
         for (Message message : chat.getMessages()) {
-            if(message.getSender() != sender && !message.isSeen())
+            if(message.getSender() != sender && !message.isSeen()&&message.canSee(sender))
                 messages.add(message);
         }
         Collections.sort(messages,new MessageComparator());
@@ -50,6 +68,7 @@ public class ChatController {
         Collections.sort(chat.getMessages(),new MessageComparator());
         ArrayList<Message> messages = new ArrayList<>();
         for (int i = 0; i <(Math.min(n,chat.getMessages().size())) ; i++) {
+            if(chat.getMessages().get(i).canSee(sender))
             messages.add(chat.getMessages().get(i));
         }
         return messages;
@@ -62,7 +81,7 @@ public class ChatController {
     }
 
     public WarningMessage editMessage(Message message,String text) {
-        if(message.getForwardedFrom() != null) {
+        if(message.getForwardedFrom() == null) {
             message.setText(text);
             return WarningMessage.EDITED_SUCCESSFULLY;
         }
@@ -75,7 +94,8 @@ public class ChatController {
     }
 
     public void deleteMessageForEveryone(Message message) {
-        chat.getMessages().remove(message);
+        message.deleteMessage();
+        chat.removeMessage(message);
     }
 
     public void forwardedInto(Message message) {
@@ -86,7 +106,7 @@ public class ChatController {
     public ArrayList<Message> searchMessage(String searchKey) {
         ArrayList<Message> messages=new ArrayList<>();
         for (Message message : chat.getMessages()) {
-            if(message.getText().contains(searchKey))
+            if(message.getText().contains(searchKey)&&message.canSee(sender))
                 messages.add(message);
         }
         Collections.sort(messages,new MessageComparator());

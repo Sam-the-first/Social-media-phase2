@@ -27,10 +27,10 @@ public class PostSettingMenu extends Menu{
 
         switch (choice) {
             case "1":
-                processOfDeletingPost(post);
+                processOfEditingPost(post);
                 break;
             case "2":
-                processOfEditingPost(post);
+                processOfDeletingPost(post);
                 break;
             case "3":
                 backToLoggedInMenu();
@@ -43,11 +43,13 @@ public class PostSettingMenu extends Menu{
 
     private void processOfDeletingPost(Post post) {
         this.controller.handleDeletePost(post);
+        run();
     }
 
     private void processOfEditingPost(Post post) {
         String text = this.getInput("Enter new text ");
         this.controller.handleEditPost(post, text);
+        run();
     }
 
     private void backToLoggedInMenu() {

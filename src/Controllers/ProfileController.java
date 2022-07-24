@@ -23,4 +23,7 @@ public class ProfileController extends Controller{
 
     }
 
+    public void block(User userToCheck) {
+        user.block(userToCheck);
+    }
 }

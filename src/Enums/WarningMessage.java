@@ -30,7 +30,8 @@ public enum WarningMessage {
     YOU_CANT_HAVE_CHAT_WITH_YOURSELF("you cant have chat with yourself"),
     MESSAGE_IS_FORWARDED("message is forwarded"),
     YOU_HAVE_NOT_LIKE_IT_YET("you have not like it yet"),
-    YOU_HAVE_NOT_COMMENT_FOR_IT_YET("you have not comment for it yet");
+    YOU_HAVE_NOT_COMMENT_FOR_IT_YET("you have not comment for it yet"),
+    YOU_ARE_BLOCKED("you are blocked");
 
 
 

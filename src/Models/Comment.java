@@ -9,12 +9,12 @@ public class Comment {
     private static int commentId = 1;
     private String text;
     private User commenter;
-    private ArrayList<Comment> comments;
-    private ArrayList<Like> likes;
+    private ArrayList<Comment> comments=new ArrayList<>();
+    private ArrayList<Like> likes=new ArrayList<>();
     private LocalDateTime time;
     private String formattedDateTime;
 
-    public static ArrayList<Comment> allComments;
+    public static ArrayList<Comment> allComments=new ArrayList<>();
 
     public Comment(String text, User commenter) {
         this.text = text;

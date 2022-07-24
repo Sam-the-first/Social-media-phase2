@@ -10,17 +10,24 @@ import Models.User;
 import java.util.ArrayList;
 
 public class ChatMenu extends Menu {
-    private User user1;
-    private User user2;
-    private LoggedInMenu loggedInMenu;
-    private ChatController controller;
-    private Chat chat;
+     User user1;
+     User user2;
+     LoggedInMenu loggedInMenu;
+     ChatController controller;
+     Chat chat;
 
     public ChatMenu(User user1, User user2, LoggedInMenu loggedInMenu) {
         this.user1 = user1;
         this.user2 = user2;
         this.loggedInMenu = loggedInMenu;
         controller = new ChatController(user1,user2);
+        chat=controller.getChat();
+    }
+
+    public ChatMenu(User user,Chat chat,ChatController chatController) {
+        this.user1=user;
+        this.chat=chat;
+        this.controller=chatController;
     }
 
     @Override
@@ -41,12 +48,18 @@ public class ChatMenu extends Menu {
                 searchMessage();
                 break;
             case "5":
+                showProfile();
+            case "6":
                 loggedInMenu.run();
             default:
                 System.out.println(WarningMessage.INVALID_CHOICE);
                 this.run();
         }
-
+    }
+    public void showProfile()
+    {
+        ProfileMenu profileMenu=new ProfileMenu(user1,loggedInMenu,user2);
+        profileMenu.run();
     }
 
     public void newMessage() {
@@ -182,7 +195,7 @@ public class ChatMenu extends Menu {
         if(message.getForwardedFrom()!=null)
             System.out.println("forwarded from "+message.getForwardedFrom().getName());
 
-        if(message.getReplied()!=null) {
+        if(message.getReplied()!=null&&message.getReplied().canSee(user1)) {
             Message reply = message.getReplied();
             String replyShow;
 
@@ -238,7 +251,8 @@ public class ChatMenu extends Menu {
         System.out.println("2. View unseen messages");
         System.out.println("3. View previous messages");
         System.out.println("4. Search");
-        System.out.println("5. Back to main menu ");
+        System.out.println("5. view "+user2.getName()+" profile");
+        System.out.println("6. Back to main menu ");
     }
 
     protected void showMessageOption(Message message) {

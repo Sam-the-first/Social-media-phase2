@@ -11,8 +11,8 @@ public class PersonalMenu extends Menu{
     private PersonalController controller;
     private LoggedInMenu loggedInMenu;
 
-    PersonalMenu(String username, LoggedInMenu loggedInMenu) {
-        user = User.getUserByUsername(username);
+    PersonalMenu(User user, LoggedInMenu loggedInMenu) {
+        this.user = user;
         this.loggedInMenu = loggedInMenu;
         controller = new PersonalController(user);
     }

@@ -6,7 +6,7 @@ public class Like {
 
     private User user;
 
-    public static ArrayList<Like> likes;
+    public static ArrayList<Like> likes=new ArrayList<>();
 
     public Like(User user) {
         this.user = user;

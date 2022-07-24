@@ -65,6 +65,7 @@ public class LoggedInMenu extends Menu {
         String text = this.getInput("Enter the text");
         WarningMessage message = this.controller.handlePost(text, user);
         System.out.println(message);
+        run();
     }
 
     private void toChat() {
@@ -99,7 +100,16 @@ public class LoggedInMenu extends Menu {
         else {
             Chat chat=user.getChats().get(choice-2);
             if(chat instanceof Group) {
-
+                Group group=(Group) chat;
+                if(group.getCreator()==user) {
+                    GroupAdminMenu groupAdminMenu = new GroupAdminMenu(user,group,this);
+                    groupAdminMenu.run();
+                }
+                else
+                {
+                    GroupMenu groupMenu=new GroupMenu(user,group,this);
+                    groupMenu.run();
+                }
             }
             else {
                 ChatMenu chatMenu=new ChatMenu(user,User.getUserByUsername(username),this);
@@ -143,14 +153,14 @@ public class LoggedInMenu extends Menu {
             startChat();
         }
         else {
-            new ChatMenu(user, User.getUserByUsername(username), this);
-            this.toChat();
+            ChatMenu chatMenu=new ChatMenu(user, User.getUserByUsername(username), this);
+            chatMenu.run();
         }
     }
     public void createGroup() {
         String name = getInput("name");
         String description = getInput("description");
-        Set<User> users = new HashSet<>();
+        ArrayList<User> users = new ArrayList<>();
         users.add(user);
         while (true) {
             System.out.println("1. to add user to your group");
@@ -158,19 +168,23 @@ public class LoggedInMenu extends Menu {
             String choice = getChoice();
             if(choice.equals("1")) {
                 String username=getInput("user name");
-                users.add(User.getUserByUsername(username));
+                User user1=User.getUserByUsername(username);
+                if(users.contains(user1))
+                    System.out.println(WarningMessage.USER_EXIST);
+                else if(user1==null)
+                    System.out.println(WarningMessage.USER_DOES_NOT_EXIST);
+                else
+                    users.add(user1);
             }
             else
                 break;
         }
-        Group group = new Group(user,users,name,description);
-        System.out.println(WarningMessage.GROUP_CREATED_SUCCESSFULLY);
-        user.addChat(group);
+        System.out.println(controller.hadnleCreateGroup(user,users,name,description));
         this.toChat();
     }
 
     private void personalSetting() {
-        PersonalMenu personalMenu = new PersonalMenu(user.getUsername(), this);
+        PersonalMenu personalMenu = new PersonalMenu(user, this);
         personalMenu.run();
     }
 
@@ -180,6 +194,7 @@ public class LoggedInMenu extends Menu {
         switch (choice) {
             case "1":
                 System.out.println(user.toString2());
+                run();
                 break;
             case "2":
                 processOfShowingPosts();
@@ -213,7 +228,7 @@ public class LoggedInMenu extends Menu {
         }
         else
             System.out.println(WarningMessage.NO_POST_YET);
-
+        run();
     }
 
     protected void showFollowings(User user) {
@@ -252,7 +267,7 @@ public class LoggedInMenu extends Menu {
         System.out.println("Enter one of these options: ");
         System.out.println("1. Search");
         System.out.println("2. Add post");
-        System.out.println("3. Create chat");
+        System.out.println("3. chat");
         System.out.println("4. Account Setting");
         System.out.println("5. show profile and posts");
         System.out.println("6. Show followings");

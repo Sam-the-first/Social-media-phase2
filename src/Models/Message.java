@@ -30,6 +30,13 @@ public class Message {
         this.receivers.add(receiver);
         forwardedFrom = message.getSender();
     }
+    public Message(Message message, LocalDateTime date, User sender, ArrayList<User> receiver) {
+        this.text = message.getText();
+        this.date = date;
+        this.sender = sender;
+        this.receivers=receiver;
+        forwardedFrom = message.getSender();
+    }
 
     public Message(String text, LocalDateTime date, User sender, ArrayList<User> receiver) {
         this.text = text;
@@ -74,6 +81,11 @@ public class Message {
         return (seen.size()>0);
     }
 
+    public boolean isSeenBy(User user)
+    {
+        return seen.contains(user);
+    }
+
     public void setSeen(User user) {
         this.seen.add(user);
     }
@@ -113,6 +125,11 @@ public class Message {
             deleted = true;
         else
             receivers.remove(user);
+    }
+    public void deleteMessage()
+    {
+        receivers.clear();
+        deleted=true;
     }
 
     public boolean canSee(User user) {

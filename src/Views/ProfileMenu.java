@@ -12,12 +12,10 @@ public class ProfileMenu extends Menu{
     private ProfileController controller;
     private PostSettingController postController;
     private LoggedInMenu loggedInMenu;
-    private SearchMenu searchMenu;
 
-    public ProfileMenu(String username, LoggedInMenu loggedInMenu, SearchMenu searchMenu, User userToCheck) {
-        user = User.getUserByUsername(username);
+    public ProfileMenu(User user, LoggedInMenu loggedInMenu, User userToCheck) {
+        this.user = user;
         this.loggedInMenu = loggedInMenu;
-        this.searchMenu = searchMenu;
         this.userToCheck = userToCheck;
         controller = new ProfileController(user);
     }
@@ -46,9 +44,6 @@ public class ProfileMenu extends Menu{
             case "6":
                 processOfBlock();
                 break;
-            case "7":
-                backToSearchMenu();
-                break;
             case "8":
                 backToLoggedInMenu();
                 break;
@@ -61,6 +56,7 @@ public class ProfileMenu extends Menu{
     private void processOfFollowUnfollow() {
         WarningMessage message = this.controller.followUnfollow(userToCheck);
         System.out.println(message);
+        run();
     }
 
     private void processOfChat() {
@@ -81,11 +77,9 @@ public class ProfileMenu extends Menu{
     }
     //TO-DO
     private void processOfBlock() {
+        controller.block(userToCheck);
     }
 
-    private void backToSearchMenu() {
-        searchMenu.run();
-    }
 
     private void backToLoggedInMenu() {
         loggedInMenu.run();
@@ -102,6 +96,7 @@ public class ProfileMenu extends Menu{
         System.out.println("3. Show " + userToCheck.getFirstname() + "'s Posts");
         System.out.println("4. Show " + userToCheck.getFirstname() + "'s Followers");
         System.out.println("5. Show " + userToCheck.getFirstname() + "'s Followings");
-        System.out.println("6. Block user");
+        System.out.println("6. Block "+ userToCheck.getFirstname());
+        System.out.println("7. Main menu");
     }
 }
