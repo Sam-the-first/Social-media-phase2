@@ -3,10 +3,7 @@ package Views;
 import Controllers.ChatController;
 import Controllers.GroupController;
 import Enums.WarningMessage;
-import Models.Chat;
-import Models.Group;
-import Models.Message;
-import Models.User;
+import Models.*;
 
 import java.util.ArrayList;
 
@@ -117,12 +114,14 @@ public class ChatMenu extends Menu {
                 reply(message);
                 break;
             case "4":
-                if(message.getSender() == user1)
+                if(message.getSender() == user1&&message.getForwardedFrom()==null)
                     edit(message);
+                else if(message instanceof Post)
+                    seePost((Post) message);
                 else run();
                 break;
             case "5":
-                if(message.getSender() == user1)
+                if(message.getSender() == user1||message instanceof Post)
                     run();
                 else
                     System.out.println(WarningMessage.INVALID_CHOICE);
@@ -131,6 +130,18 @@ public class ChatMenu extends Menu {
                 System.out.println(WarningMessage.INVALID_CHOICE);
                 messageOption(message);
         }
+    }
+
+    private void seePost(Post post) {
+        if (post.getCommenter().equals(user1)) {
+            PostSettingMenu postSettingMenu = new PostSettingMenu(user1.getUsername(), loggedInMenu, post);
+            postSettingMenu.run();
+        }
+        else {
+            PostMenu postMenu = new PostMenu(user1.getUsername(), post, loggedInMenu);
+            postMenu.run();
+        }
+
     }
 
     public void forward(Message message) {
@@ -189,37 +200,44 @@ public class ChatMenu extends Menu {
     }
 
     public void showMessage(Message message) {
-        String sender;
-        String seen = "";
-        if(message.getSender() == user1) {
-            sender = "you";
-            if(message.isSeen())
-                seen="seen";
-            else
-                seen="notSeen";
+        if(message instanceof Post)
+        {
+            Post post=(Post) message;
+            System.out.println("post forwarded from "+post.getCommenter().getFirstname());
+            System.out.println(post.getText());
         }
-        else
-            sender = message.getSender().getFirstname();
+        else {
+            String sender;
+            String seen = "";
+            if (message.getSender() == user1) {
+                sender = "you";
+                if (message.isSeen())
+                    seen = "seen";
+                else
+                    seen = "notSeen";
+            } else
+                sender = message.getSender().getFirstname();
 
-        if(message.getForwardedFrom()!=null)
-            System.out.println("forwarded from "+message.getForwardedFrom().getName());
+            if (message.getForwardedFrom() != null)
+                System.out.println("forwarded from " + message.getForwardedFrom().getName());
 
-        if(message.getReplied()!=null&&message.getReplied().canSee(user1)) {
-            Message reply = message.getReplied();
-            String replyShow;
+            if (message.getReplied() != null && message.getReplied().canSee(user1)) {
+                Message reply = message.getReplied();
+                String replyShow;
 
-            if(reply.getText().length()>10)
-                replyShow =reply.getText().substring(0, 10);
+                if (reply.getText().length() > 10)
+                    replyShow = reply.getText().substring(0, 10);
 
-            else
-                replyShow=reply.getText();
+                else
+                    replyShow = reply.getText();
 
-            System.out.println("in reply to: " + replyShow);
+                System.out.println("in reply to: " + replyShow);
+            }
+
+            System.out.println(message.getText() + " ---- " + "Sent By:" + sender + " ---- " + "at:" + message.getDate() + " ---- " + seen);
+            if (user1 != chat.getUser1())
+                message.setSeen(user1);
         }
-
-        System.out.println(message.getText()+" ---- " + "Sent By:"+sender+" ---- "+"at:"+message.getDate()+" ---- "+seen);
-        if(user1 != chat.getUser1())
-            message.setSeen(user1);
     }
 
     public void deleteMessage(Message message) {
@@ -269,11 +287,19 @@ public class ChatMenu extends Menu {
         System.out.println("1. Forward");
         System.out.println("2. delete");
         System.out.println("3. Reply");
-        if(message.getSender() == user1) {
+        if(message.getSender() == user1&&message.getForwardedFrom()==null) {
             System.out.println("4. Edit ");
             System.out.println("5. Previous menu");
         }
-        else
+        else {
+            if(message instanceof Post)
+            {
+                System.out.println("4. seePost");
+                System.out.println("5 previous menu");
+            }
+            else
             System.out.println("4. Previous menu");
+        }
     }
+
 }

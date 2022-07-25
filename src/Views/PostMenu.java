@@ -1,10 +1,11 @@
 package Views;
 
+import Controllers.ChatController;
+import Controllers.GroupAdminController;
+import Controllers.GroupController;
 import Controllers.PostController;
 import Enums.WarningMessage;
-import Models.Comment;
-import Models.Post;
-import Models.User;
+import Models.*;
 
 import java.util.ArrayList;
 
@@ -14,13 +15,12 @@ public class PostMenu extends Menu{
     private Post post;
     private PostController controller;
     private LoggedInMenu loggedInMenu;
-    private SearchMenu searchMenu;
 
-    public PostMenu(String username, Post post, LoggedInMenu loggedInMenu, SearchMenu searchMenu) {
+
+    public PostMenu(String username, Post post, LoggedInMenu loggedInMenu) {
         user = User.getUserByUsername(username);
         this.post = post;
         this.loggedInMenu = loggedInMenu;
-        this.searchMenu = searchMenu;
         controller = new PostController(user, post);
     }
 
@@ -58,9 +58,6 @@ public class PostMenu extends Menu{
             case "9":
                 processOfShowViewers();
                 break;
-            case "10":
-                backToSearchMenu();
-                break;
             case "11":
                 backToLoggedInMenu();
                 break;
@@ -89,7 +86,53 @@ public class PostMenu extends Menu{
 
     //TO-DO
     private void processOfShare() {
-
+        System.out.println("1. Cancel");
+        int i=2;
+        String username="";
+        for (Chat chat : user.getChats()) {
+            String name;
+            if(chat instanceof Group) {
+                Group group = (Group) chat;
+                name = group.getName();
+            }
+            else {
+                if(chat.getUser1() == user) {
+                    name = chat.getUser2().getName();
+                    username=chat.getUser2().getUsername();
+                }
+                else {
+                    name = chat.getUser1().getName();
+                    username=chat.getUser1().getUsername();
+                }
+            }
+            System.out.println(i+". "+name);
+            i++;
+        }
+        System.out.println(i+". "+"Previous Menu");
+        int choice=Integer.parseInt(getChoice());
+        if(choice==1)
+            run();
+        else if(choice>user.getChats().size()+1)
+            run();
+        else {
+            Chat chat=user.getChats().get(choice-2);
+            if(chat instanceof Group) {
+                Group group=(Group) chat;
+                if(group.getCreator()==user) {
+                    GroupAdminController groupAdminControlle=new GroupAdminController(user,group);
+                    groupAdminControlle.forwardedInto(post);
+                }
+                else
+                {
+                    GroupController groupController =new GroupAdminController(user,group);
+                    groupController.forwardedInto(post);
+                }
+            }
+            else {
+                ChatController chatController=new ChatController(user,chat);
+                chatController.forwardedInto(post);
+            }
+        }
     }
 
     private void processOfSave() {
@@ -150,9 +193,6 @@ public class PostMenu extends Menu{
 
     }
 
-    private void backToSearchMenu() {
-        searchMenu.run();
-    }
 
     private void backToLoggedInMenu() {
         loggedInMenu.run();

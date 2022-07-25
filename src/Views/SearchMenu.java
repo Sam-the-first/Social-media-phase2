@@ -116,7 +116,7 @@ public class SearchMenu extends Menu {
     }
 
     private void showPostOptions(Post post) {
-        PostMenu postMenu = new PostMenu(user.getUsername(), post, loggedInMenu, this);
+        PostMenu postMenu = new PostMenu(user.getUsername(), post, loggedInMenu);
         postMenu.run();
     }
 

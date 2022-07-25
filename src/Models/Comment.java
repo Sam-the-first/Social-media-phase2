@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class Comment {
+public class Comment extends Message {
 
     private static int commentId = 1;
     private String text;

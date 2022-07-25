@@ -44,6 +44,10 @@ public class Message {
         this.sender = sender;
         this.receivers = receiver;
     }
+    public Message()
+    {
+
+    }
 
     public boolean isDeleted() {
         return deleted;
