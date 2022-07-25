@@ -4,10 +4,10 @@ import Models.User;
 
 import java.util.Comparator;
 
-public class UserComparator implements Comparator<User> {
+public class UserSearchComparator implements Comparator<User> {
     User user;
     String searchKey;
-    public UserComparator(User user, String searchKey) {
+    public UserSearchComparator(User user, String searchKey) {
         this.user=user;
         this.searchKey=searchKey;
     }

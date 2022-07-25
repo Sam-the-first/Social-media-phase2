@@ -1,7 +1,7 @@
 package Controllers;
 
 import Comparator.PostComparator;
-import Comparator.UserComparator;
+import Comparator.UserSearchComparator;
 import Models.Post;
 import Models.User;
 
@@ -29,7 +29,7 @@ public class SearchController {
                 }
             }
         }
-        Collections.sort(containedUser,new UserComparator(user,searchKey));
+        Collections.sort(containedUser,new UserSearchComparator(user,searchKey));
         return containedUser;
     }
 

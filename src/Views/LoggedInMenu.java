@@ -48,12 +48,19 @@ public class LoggedInMenu extends Menu {
                 this.showFollowers(user);
                 break;
             case "8":
+                suggestion();
+                break;
+            case "9":
                 backToWelcomeMenu();
                 break;
             default:
                 System.out.println(WarningMessage.INVALID_CHOICE);
                 run();
         }
+    }
+
+    private void suggestion() {
+        SuggestionMenu suggestionMenu=new SuggestionMenu(user,this);
     }
 
     private void searchMenu() {
@@ -273,7 +280,8 @@ public class LoggedInMenu extends Menu {
         System.out.println("5. show profile and posts");
         System.out.println("6. Show followings");
         System.out.println("7. Show followers");
-        System.out.println("8. LogOut");
+        System.out.println("8. suggestion");
+        System.out.println("9. LogOut");
     }
 
     private void showMyProfileOptions() {
