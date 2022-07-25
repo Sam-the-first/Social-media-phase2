@@ -3,6 +3,9 @@ package Controllers;
 import Enums.WarningMessage;
 import Models.User;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class PersonalController {
 
     private User user;
@@ -36,4 +39,20 @@ public class PersonalController {
         return WarningMessage.SUCCESS;
     }
 
+    public WarningMessage handleQuestionChange(String securityQuestion) {
+        user.setSecurityAnswer(securityQuestion);
+        return WarningMessage.SECURITY_QUESTION_CHANGED_SUCCESSFULLY;
+    }
+
+    public WarningMessage handleBithDateChange(String birthDateStr) {
+        try {
+            LocalDate birthDate = LocalDate.parse(birthDateStr, DateTimeFormatter.ofPattern("yyyy/MM/dd"));
+            user.setBirthDate(birthDate);
+            return WarningMessage.BIRTHDATE_CHANGED_SUCCESSFULLY;
+        }
+        catch (Exception e)
+        {
+           return WarningMessage.Invalid_BIRTH_DATE;
+        }
+    }
 }

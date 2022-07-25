@@ -8,7 +8,7 @@ public class User {
 
     public final static ArrayList<User> users = new ArrayList<>();
     public static final String SECURITY_QUESTION = "What was your best friend's name in high school?";
-    public static Comparator<? super User> searchComparator;
+
 
 
     private String username;

@@ -31,7 +31,9 @@ public enum WarningMessage {
     MESSAGE_IS_FORWARDED("message is forwarded"),
     YOU_HAVE_NOT_LIKE_IT_YET("you have not like it yet"),
     YOU_HAVE_NOT_COMMENT_FOR_IT_YET("you have not comment for it yet"),
-    YOU_ARE_BLOCKED("you are blocked");
+    YOU_ARE_BLOCKED("you are blocked"),
+    SECURITY_QUESTION_CHANGED_SUCCESSFULLY("security question change successfully"),
+    BIRTHDATE_CHANGED_SUCCESSFULLY("birthdate changed successfully");
 
 
 

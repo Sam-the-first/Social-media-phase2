@@ -5,6 +5,9 @@ import Controllers.WelcomeController;
 import Enums.WarningMessage;
 import Models.User;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 public class PersonalMenu extends Menu{
 
     private User user;
@@ -78,13 +81,15 @@ public class PersonalMenu extends Menu{
         this.run();
     }
 
-    //TO_DO
     private void changeSecurityQuestionAnswer() {
         String securityQuestion = getInput(User.SECURITY_QUESTION);
+        System.out.println(controller.handleQuestionChange(securityQuestion));
         this.run();
     }
-    //TO_DO
+
     private void changeBirthDate() {
+        String birthDateStr=getInput("enter your birthDate in this format(yyyy/MM/dd)");
+        System.out.println(controller.handleBithDateChange(birthDateStr));
         this.run();
     }
 
